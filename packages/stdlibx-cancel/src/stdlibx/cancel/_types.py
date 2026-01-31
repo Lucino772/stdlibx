@@ -1,0 +1,94 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Literal, NoReturn, Protocol
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+
+class CancellationToken(Protocol):
+    """A cooperative cancellation token interface. Represents a handle that can
+    be checked or awaited to respond to cancellation events triggered elsewhere
+    """
+
+    def register(self, fn: Callable[[Exception], None]) -> None:
+        """Register a callback to be invoked when the token is cancelled.
+
+        :param fn: A function to call when cancellation occurs. Receives a
+            `Exception`.
+        """
+        ...
+
+    def is_cancelled(self) -> bool:
+        """Check whether the token has been cancelled.
+
+        :returns: True if the token has been cancelled, False otherwise.
+        """
+        ...
+
+    def get_error(self) -> Exception | None:
+        """Get the cancellation error if the token has been cancelled.
+
+        :returns: The `Exception` if cancelled, or None.
+        """
+        ...
+
+    def raise_if_cancelled(self):
+        """Raise the cancellation error if the token has been cancelled.
+
+        :raises Exception: If the token is cancelled.
+        """
+        ...
+
+    def wait(self, timeout: float | None) -> Exception | None:
+        """Block until the token is cancelled or the timeout expires.
+
+        :param timeout: Maximum time to wait in seconds, or None to wait
+            indefinitely.
+        :returns: The `Exception` if cancelled, or None if the timeout expires.
+        """
+        ...
+
+
+class CancelledToken(CancellationToken, Protocol):
+    """A token that is already cancelled. This specialization of `Token`
+    ensures that cancellation has occurred and provides non-optional return
+    types
+
+    Example:
+
+    .. code-block:: python
+        :linenos:
+
+        if is_token_cancelled(token):
+            reveal_type(token) # CancelledToken
+    """
+
+    def is_cancelled(self) -> Literal[True]:
+        """Always returns True, since the token is cancelled.
+
+        :returns: True
+        """
+        ...
+
+    def get_error(self) -> Exception:
+        """Get the cancellation error.
+
+        :returns: The `Exception` associated with this cancelled token.
+        """
+        ...
+
+    def raise_if_cancelled(self) -> NoReturn:
+        """Always raises the cancellation error.
+
+        :raises Exception: The associated cancellation error.
+        """
+        ...
+
+    def wait(self, timeout: float | None) -> Exception:
+        """Immediately returns the cancellation error.
+
+        :param timeout: Ignored. Present for interface compatibility.
+        :returns: The `Exception` associated with this cancelled token.
+        """
+        ...
