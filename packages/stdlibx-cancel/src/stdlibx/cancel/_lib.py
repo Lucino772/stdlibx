@@ -8,11 +8,12 @@ from stdlibx.cancel._errors import (
     CancellationTokenCancelledError,
     CancellationTokenTimeoutError,
 )
-from stdlibx.cancel._types import CancellationToken, CancelledToken
 from typing_extensions import TypeGuard
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+
+    from stdlibx.cancel._types import CancellationToken, CancelledToken
 
 
 def default_token() -> CancellationToken:
