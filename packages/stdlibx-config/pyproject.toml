@@ -1,0 +1,21 @@
+[project]
+name = "stdlibx-config"
+version = "0.1.0"
+description = "stdlibx-config"
+authors = [
+    { name = "Lucino772" }
+]
+requires-python = ">=3.9.25"
+dependencies = []
+
+[project.optional-dependencies]
+yaml = [
+    "ruamel-yaml>=0.18.16",
+]
+
+[tool.uv.build-backend]
+module-name = "stdlibx.config"
+
+[build-system]
+requires = ["uv_build>=0.9.28,<0.10.0"]
+build-backend = "uv_build"
