@@ -17,7 +17,7 @@ dev = [
 ]
 
 [tool.ruff.lint]
-extend-select = ["I", "RUF022", "RUF023", "W505"]
+extend-select = ["I", "RUF022", "RUF023", "W505", "TC", "FA", "C4", "PYI", "COM818"]
 extend-ignore = ["D203", "D213"]
 
 [tool.ruff.lint.pycodestyle]
@@ -29,4 +29,10 @@ ban-relative-imports = "all"
 [tool.uv.workspace]
 members = [
     "packages/stdlibx-cancel",
+    "packages/stdlibx-result",
+    "packages/stdlibx-option",
+    "packages/stdlibx-compose",
+    "packages/stdlibx-config",
+    "packages/stdlibx-itertools",
+    "packages/stdlibx-matchtools",
 ]
