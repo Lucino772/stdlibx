@@ -35,5 +35,5 @@ members = [
     "packages/stdlibx-config",
     "packages/stdlibx-itertools",
     "packages/stdlibx-matchtools",
-    "packages/stdlib-streams",
+    "packages/stdlibx-streams",
 ]

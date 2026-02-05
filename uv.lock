@@ -847,7 +847,7 @@ requires-dist = [{ name = "typing-extensions", specifier = ">=4.10.0,<5" }]
 [[package]]
 name = "stdlibx-streams"
 version = "0.1.0"
-source = { editable = "packages/stdlib-streams" }
+source = { editable = "packages/stdlibx-streams" }
 dependencies = [
     { name = "typing-extensions" },
 ]
