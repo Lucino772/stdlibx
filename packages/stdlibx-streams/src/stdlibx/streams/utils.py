@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import TypeVar
 
-from stdlibx.streams import Observable, Subject
+from stdlibx.streams._subject import Subject
+from stdlibx.streams._types import Observable
 
 T = TypeVar("T")
 
