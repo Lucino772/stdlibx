@@ -2,6 +2,9 @@
 name = "stdlibx-config"
 version = "0.1.0"
 description = "stdlibx-config"
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+readme = "README.md"
 authors = [
     { name = "Lucino772" }
 ]
@@ -12,6 +15,10 @@ dependencies = []
 yaml = [
     "ruamel-yaml>=0.18.16",
 ]
+
+[project.urls]
+Documentation = "http://stdlibx.lucapalmi.com/"
+Repository = "https://github.com/Lucino772/stdlibx"
 
 [tool.uv.build-backend]
 module-name = "stdlibx.config"

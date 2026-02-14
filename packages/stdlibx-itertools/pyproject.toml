@@ -2,6 +2,9 @@
 name = "stdlibx-itertools"
 version = "0.1.0"
 description = "stdlibx-itertools"
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+readme = "README.md"
 authors = [
     { name = "Lucino772" }
 ]
@@ -9,6 +12,10 @@ requires-python = ">=3.9"
 dependencies = [
     "typing_extensions>=4.10.0,<5"
 ]
+
+[project.urls]
+Documentation = "http://stdlibx.lucapalmi.com/"
+Repository = "https://github.com/Lucino772/stdlibx"
 
 [tool.uv.build-backend]
 module-name = "stdlibx.itertools"
