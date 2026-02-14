@@ -61,7 +61,7 @@ class CancelledToken(CancellationToken, Protocol):
         :linenos:
 
         if is_token_cancelled(token):
-            reveal_type(token) # CancelledToken
+            reveal_type(token)  # CancelledToken
     """
 
     def is_cancelled(self) -> Literal[True]:

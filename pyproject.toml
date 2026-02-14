@@ -16,6 +16,14 @@ dev = [
     "sphinx-inline-tabs==2025.12.21.14",
 ]
 
+[tool.ruff]
+line-length = 88
+indent-width = 4
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 80
+
 [tool.ruff.lint]
 extend-select = ["I", "RUF022", "RUF023", "W505", "TC", "FA", "C4", "PYI", "COM818"]
 extend-ignore = ["D203", "D213"]
