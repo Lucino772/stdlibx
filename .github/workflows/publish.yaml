@@ -17,7 +17,5 @@ jobs:
           version: "0.9.28"
       - name: Build all packages
         run: uv build --all-packages
-      - name: Publish
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          skip-existing: true
+      - name: Publish all packages
+        run: uv publish --dry-run --trusted-publishing always
