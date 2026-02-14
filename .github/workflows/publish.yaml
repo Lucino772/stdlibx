@@ -18,4 +18,4 @@ jobs:
       - name: Build all packages
         run: uv build --all-packages
       - name: Publish all packages
-        run: uv publish --dry-run --trusted-publishing always
+        run: uv publish --trusted-publishing always
