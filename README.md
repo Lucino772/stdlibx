@@ -6,7 +6,7 @@
 It provides practical tools for handling optional values, explicit error management, cancellation, composition, configuration, pattern matching, and reactive flows.
 
 ## Documentation
-Checkout the [documentation](https://lucino772.github.io/pymojang/)
+Checkout the [documentation](http://stdlibx.lucapalmi.com/)
 
 ## Licence
-This project uses a **MIT** Licence [view](https://github.com/Lucino772/pymojang/blob/main/LICENSE)
+This project uses a **MIT** Licence [view](https://github.com/Lucino772/stdlibx/blob/main/LICENSE)
