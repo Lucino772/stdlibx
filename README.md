@@ -1,3 +1,5 @@
+[![docs](https://github.com/Lucino772/stdlibx/actions/workflows/deploy-docs.yaml/badge.svg?branch=main)](https://github.com/Lucino772/stdlibx/actions/workflows/deploy-docs.yaml)
+
 # stdlibx
 **stdlibx** is a collection of small, focused Python utilities that simplify common programming patterns and help you write clearer, more composable code.
 
