@@ -1,6 +1,6 @@
 [project]
 name = "stdlibx-option"
-version = "0.1.0"
+version = "0.2.0"
 description = "stdlibx-option"
 license = "MIT"
 license-files = ["LICEN[CS]E*"]
