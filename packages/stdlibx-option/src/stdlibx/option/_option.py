@@ -32,16 +32,14 @@ def is_none(opt: Option[T]) -> TypeIs[Nothing]:
     return opt.is_none()
 
 
-def optional_of(
-    func: Callable[P, T | None], *args: P.args, **kwargs: P.kwargs
-) -> Option[T]:
+def maybe(func: Callable[P, T | None], *args: P.args, **kwargs: P.kwargs) -> Option[T]:
     value = func(*args, **kwargs)
     if value is None:
         return nothing()
     return some(value)
 
 
-def as_optional(func: Callable[P, T | None]) -> Callable[P, Option[T]]:
+def optional(func: Callable[P, T | None]) -> Callable[P, Option[T]]:
     @wraps(func)
     def _wrapped(*args: P.args, **kwargs: P.kwargs) -> Option[T]:
         result = func(*args, **kwargs)

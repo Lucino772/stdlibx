@@ -21,11 +21,11 @@ from stdlibx.option._operations.base import (
     zipped,
 )
 from stdlibx.option._option import (
-    as_optional,
     is_none,
     is_some,
+    maybe,
     nothing,
-    optional_of,
+    optional,
     some,
 )
 
@@ -35,7 +35,6 @@ __all__ = [
     "OptionUnwrapError",
     "and_",
     "and_then",
-    "as_optional",
     "collect",
     "collect_all",
     "expect",
@@ -49,8 +48,9 @@ __all__ = [
     "map_",
     "map_or",
     "map_or_else",
+    "maybe",
     "nothing",
-    "optional_of",
+    "optional",
     "or_",
     "or_else",
     "some",
