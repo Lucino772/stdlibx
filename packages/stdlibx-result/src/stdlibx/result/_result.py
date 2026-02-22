@@ -13,7 +13,6 @@ T = TypeVar("T")
 E = TypeVar("E")
 U = TypeVar("U")
 P = ParamSpec("P")
-_AnyException = TypeVar("_AnyException", bound=Exception)
 
 
 def ok(value: T) -> Result[T, E]:
@@ -32,7 +31,7 @@ def is_err(result: Result[T, E]) -> TypeIs[Error[E]]:
     return result.is_err()
 
 
-def result_of(
+def try_(
     func: Callable[P, T], *args: P.args, **kwargs: P.kwargs
 ) -> Result[T, Exception]:
     try:
@@ -41,14 +40,12 @@ def result_of(
         return error(e)
 
 
-def as_result(
-    func: Callable[P, T], exceptions: tuple[type[_AnyException], ...] = (Exception,)
-) -> Callable[P, Result[T, _AnyException]]:
+def safe(func: Callable[P, T]) -> Callable[P, Result[T, Exception]]:
     @wraps(func)
-    def _wrapped(*args: P.args, **kwargs: P.kwargs) -> Result[T, _AnyException]:
+    def _wrapped(*args: P.args, **kwargs: P.kwargs) -> Result[T, Exception]:
         try:
             return ok(func(*args, **kwargs))
-        except exceptions as e:
+        except Exception as e:
             return error(e)
 
     return _wrapped

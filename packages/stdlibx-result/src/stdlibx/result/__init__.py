@@ -23,7 +23,7 @@ from stdlibx.result._operations.base import (
     unwrap_or_raise,
     zipped,
 )
-from stdlibx.result._result import as_result, error, is_err, is_ok, ok, result_of
+from stdlibx.result._result import error, is_err, is_ok, ok, safe, try_
 
 __all__ = [
     "ResultError",
@@ -31,7 +31,6 @@ __all__ = [
     "ResultUnwrapError",
     "and_",
     "and_then",
-    "as_result",
     "collect",
     "collect_all",
     "error",
@@ -51,7 +50,8 @@ __all__ = [
     "ok",
     "or_",
     "or_else",
-    "result_of",
+    "safe",
+    "try_",
     "unwrap",
     "unwrap_err",
     "unwrap_or",
