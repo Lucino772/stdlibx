@@ -702,7 +702,7 @@ requires-dist = [{ name = "typing-extensions", specifier = ">=4.10.0,<5" }]
 
 [[package]]
 name = "stdlibx-result"
-version = "0.1.0"
+version = "0.2.0"
 source = { editable = "packages/stdlibx-result" }
 dependencies = [
     { name = "typing-extensions" },
