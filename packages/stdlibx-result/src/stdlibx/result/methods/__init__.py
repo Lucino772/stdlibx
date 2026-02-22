@@ -47,8 +47,8 @@ __all__ = [
 ]
 
 try:
-    from stdlibx.result.methods.option import err, ok, transpose
+    from stdlibx.result.methods.option import get_error, get_ok, transpose
 
-    __all__ += ["err", "ok", "transpose"]
+    __all__ += ["get_error", "get_ok", "transpose"]
 except ImportError:
     pass

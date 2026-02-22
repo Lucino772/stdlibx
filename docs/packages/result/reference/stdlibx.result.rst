@@ -12,5 +12,12 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   stdlibx.result.fn
    stdlibx.result.methods
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   stdlibx.result.types

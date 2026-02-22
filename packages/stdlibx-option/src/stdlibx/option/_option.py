@@ -3,10 +3,11 @@ from __future__ import annotations
 from functools import wraps
 from typing import TYPE_CHECKING, Callable, Generic, TypeVar
 
-from typing_extensions import ParamSpec, TypeAlias, TypeGuard
+from stdlibx.option.types import Nothing, Some
+from typing_extensions import ParamSpec, TypeIs
 
 if TYPE_CHECKING:
-    from stdlibx.option._types import Operation
+    from stdlibx.option.types import Operation, Option
 
 
 T = TypeVar("T")
@@ -14,14 +15,20 @@ E = TypeVar("E")
 U = TypeVar("U")
 P = ParamSpec("P")
 
-Option: TypeAlias = "Some[T] | Nothing[T]"
+
+def some(value: T) -> Option[T]:
+    return _Some(value)
 
 
-def is_some(opt: Option[T]) -> TypeGuard[Some[T]]:
+def nothing() -> Option[T]:
+    return _Nothing()
+
+
+def is_some(opt: Option[T]) -> TypeIs[Some[T]]:
     return opt.is_some()
 
 
-def is_none(opt: Option[T]) -> TypeGuard[Nothing[T]]:
+def is_none(opt: Option[T]) -> TypeIs[Nothing]:
     return opt.is_none()
 
 
@@ -30,8 +37,8 @@ def optional_of(
 ) -> Option[T]:
     value = func(*args, **kwargs)
     if value is None:
-        return Nothing()
-    return Some(value)
+        return nothing()
+    return some(value)
 
 
 def as_optional(func: Callable[P, T | None]) -> Callable[P, Option[T]]:
@@ -39,13 +46,13 @@ def as_optional(func: Callable[P, T | None]) -> Callable[P, Option[T]]:
     def _wrapped(*args: P.args, **kwargs: P.kwargs) -> Option[T]:
         result = func(*args, **kwargs)
         if result is None:
-            return Nothing()
-        return Some(result)
+            return nothing()
+        return some(result)
 
     return _wrapped
 
 
-class Some(Generic[T]):
+class _Some(Generic[T]):
     __match_args__ = ("value",)
     __slots__ = ("value",)
 
@@ -72,7 +79,7 @@ class Some(Generic[T]):
         return operation(self)
 
 
-class Nothing(Generic[T]):
+class _Nothing:
     __slots__ = ()
 
     def __repr__(self) -> str:

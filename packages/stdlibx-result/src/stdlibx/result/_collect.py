@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import functools
-from typing import Any, Iterable, TypeVar, Union, overload
+from typing import TYPE_CHECKING, Any, Iterable, TypeVar, Union, overload
 
-from stdlibx.result._result import Error, Ok, Result, is_err
+from stdlibx.result._result import error, is_err, ok
+
+if TYPE_CHECKING:
+    from stdlibx.result.types import Result
 
 T = TypeVar("T")
 E = TypeVar("E")
@@ -136,13 +139,13 @@ def collect(
         b: Result[Any, Any],
     ) -> Result[tuple[Any, ...], Any]:
         if is_err(a):
-            return Error(a.error)
+            return error(a.error)
         elif is_err(b):
-            return Error(b.error)
+            return error(b.error)
         else:
-            return Ok(((*a.value, b.value)))  # type: ignore
+            return ok(((*a.value, b.value)))  # type: ignore
 
-    return functools.reduce(_combine, [initial, *others], Ok(()))
+    return functools.reduce(_combine, [initial, *others], ok(()))
 
 
 def collect_all(iterable: Iterable[Result[T, E]]) -> Result[tuple[T, ...], E]:
@@ -151,10 +154,10 @@ def collect_all(iterable: Iterable[Result[T, E]]) -> Result[tuple[T, ...], E]:
         b: Result[T, E],
     ) -> Result[tuple[T, ...], E]:
         if is_err(a):
-            return Error(a.error)
+            return error(a.error)
         elif is_err(b):
-            return Error(b.error)
+            return error(b.error)
         else:
-            return Ok(((*a.value, b.value)))  # type: ignore
+            return ok(((*a.value, b.value)))  # type: ignore
 
-    return functools.reduce(_combine, iterable, Ok(()))
+    return functools.reduce(_combine, iterable, ok(()))

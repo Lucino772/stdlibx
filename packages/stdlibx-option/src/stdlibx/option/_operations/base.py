@@ -3,11 +3,11 @@ from __future__ import annotations
 from functools import partial
 from typing import TYPE_CHECKING, Callable, TypeVar
 
-from stdlibx.option import Option, methods
+from stdlibx.option import methods
 from typing_extensions import TypeVarTuple, Unpack
 
 if TYPE_CHECKING:
-    from stdlibx.option._option import Operation
+    from stdlibx.option.types import Operation, Option
 
 T = TypeVar("T")
 U = TypeVar("U")

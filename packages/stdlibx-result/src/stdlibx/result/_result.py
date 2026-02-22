@@ -3,10 +3,11 @@ from __future__ import annotations
 from functools import wraps
 from typing import TYPE_CHECKING, Callable, Generic, Literal, TypeVar
 
-from typing_extensions import ParamSpec, TypeAlias, TypeGuard
+from stdlibx.result.types import Error, Ok
+from typing_extensions import ParamSpec, TypeIs
 
 if TYPE_CHECKING:
-    from stdlibx.result._types import Operation
+    from stdlibx.result.types import Operation, Result
 
 T = TypeVar("T")
 E = TypeVar("E")
@@ -14,14 +15,20 @@ U = TypeVar("U")
 P = ParamSpec("P")
 _AnyException = TypeVar("_AnyException", bound=Exception)
 
-Result: TypeAlias = "Ok[T, E] | Error[T, E]"
+
+def ok(value: T) -> Result[T, E]:
+    return _Ok(value)
 
 
-def is_ok(result: Result[T, E]) -> TypeGuard[Ok[T, E]]:
+def error(error: E) -> Result[T, E]:
+    return _Error(error)
+
+
+def is_ok(result: Result[T, E]) -> TypeIs[Ok[T]]:
     return result.is_ok()
 
 
-def is_err(result: Result[T, E]) -> TypeGuard[Error[T, E]]:
+def is_err(result: Result[T, E]) -> TypeIs[Error[E]]:
     return result.is_err()
 
 
@@ -29,9 +36,9 @@ def result_of(
     func: Callable[P, T], *args: P.args, **kwargs: P.kwargs
 ) -> Result[T, Exception]:
     try:
-        return Ok(func(*args, **kwargs))
+        return ok(func(*args, **kwargs))
     except Exception as e:
-        return Error(e)
+        return error(e)
 
 
 def as_result(
@@ -40,14 +47,14 @@ def as_result(
     @wraps(func)
     def _wrapped(*args: P.args, **kwargs: P.kwargs) -> Result[T, _AnyException]:
         try:
-            return Ok(func(*args, **kwargs))
+            return ok(func(*args, **kwargs))
         except exceptions as e:
-            return Error(e)
+            return error(e)
 
     return _wrapped
 
 
-class Ok(Generic[T, E]):
+class _Ok(Generic[T]):
     __match_args__ = ("value",)
     __slots__ = ("value",)
 
@@ -74,7 +81,7 @@ class Ok(Generic[T, E]):
         return operation(self)
 
 
-class Error(Generic[T, E]):
+class _Error(Generic[E]):
     __match_args__ = ("error",)
     __slots__ = ("error",)
 

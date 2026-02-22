@@ -1,10 +1,13 @@
 from __future__ import annotations
 
-from typing import Callable, TypeVar, Union
+from typing import TYPE_CHECKING, Callable, TypeVar, Union
 
 from stdlibx.result._errors import ResultExpectError, ResultUnwrapError
-from stdlibx.result._result import Error, Ok, Result, is_err, is_ok
+from stdlibx.result._result import error, is_err, is_ok, ok
 from typing_extensions import TypeVarTuple, Unpack
+
+if TYPE_CHECKING:
+    from stdlibx.result.types import Result
 
 T = TypeVar("T")
 E = TypeVar("E")
@@ -24,8 +27,8 @@ def is_err_and(result: Result[T, E], func: Callable[[E], bool]) -> bool:
 
 def map_(result: Result[T, E], func: Callable[[T], U]) -> Result[U, E]:
     if is_ok(result):
-        return Ok(func(result.value))
-    return Error(result.error)  # type: ignore
+        return ok(func(result.value))
+    return error(result.error)
 
 
 def map_or(result: Result[T, E], default: U, func: Callable[[T], U]) -> U:
@@ -39,13 +42,13 @@ def map_or_else(
 ) -> U:
     if is_ok(result):
         return func(result.value)
-    return default(result.error)  # type: ignore
+    return default(result.error)
 
 
 def map_err(result: Result[T, E], func: Callable[[E], F]) -> Result[T, F]:
     if is_err(result):
-        return Error(func(result.error))
-    return Ok(result.value)  # type: ignore
+        return error(func(result.error))
+    return ok(result.value)
 
 
 def inspect(result: Result[T, E], func: Callable[[T], None]) -> Result[T, E]:
@@ -64,7 +67,7 @@ def expect(result: Result[T, E], msg: str) -> T:
     if is_ok(result):
         return result.value
 
-    _msg = f"{msg}: {result.error}"  # type: ignore
+    _msg = f"{msg}: {result.error}"
     raise ResultExpectError(_msg)
 
 
@@ -72,7 +75,7 @@ def unwrap(result: Result[T, E]) -> T:
     if is_ok(result):
         return result.value
 
-    _msg = f"{result.error}"  # type: ignore
+    _msg = f"{result.error}"
     raise ResultUnwrapError(_msg)
 
 
@@ -80,7 +83,7 @@ def expect_err(result: Result[T, E], msg: str) -> E:
     if is_err(result):
         return result.error
 
-    _msg = f"{msg}: {result.value}"  # type: ignore
+    _msg = f"{msg}: {result.value}"
     raise ResultExpectError(_msg)
 
 
@@ -88,14 +91,14 @@ def unwrap_err(result: Result[T, E]) -> E:
     if is_err(result):
         return result.error
 
-    _msg = f"{result.value}"  # type: ignore
+    _msg = f"{result.value}"
     raise ResultUnwrapError(_msg)
 
 
 def and_(result: Result[T, E], other: Result[U, F]) -> Result[U, Union[E, F]]:
     if is_ok(result):
         return other  # type: ignore
-    return Error(result.error)  # type: ignore
+    return error(result.error)
 
 
 def and_then(
@@ -103,19 +106,19 @@ def and_then(
 ) -> Result[U, Union[E, F]]:
     if is_ok(result):
         return func(result.value)  # type: ignore
-    return Error(result.error)  # type: ignore
+    return error(result.error)
 
 
 def or_(result: Result[T, E], default: Result[T, F]) -> Result[T, F]:
     if is_ok(result):
-        return Ok(result.value)
+        return ok(result.value)
     return default
 
 
 def or_else(result: Result[T, E], default: Callable[[E], Result[T, F]]) -> Result[T, F]:
     if is_err(result):
         return default(result.error)
-    return Ok(result.value)  # type: ignore
+    return ok(result.value)
 
 
 def unwrap_or(result: Result[T, E], default: T) -> T:
@@ -127,19 +130,19 @@ def unwrap_or(result: Result[T, E], default: T) -> T:
 def unwrap_or_else(result: Result[T, E], default: Callable[[E], T]) -> T:
     if is_ok(result):
         return result.value
-    return default(result.error)  # type: ignore
+    return default(result.error)
 
 
 def unwrap_or_raise(result: Result[T, _AnyException]) -> T:
     if is_ok(result):
         return result.value
-    raise result.error  # type: ignore
+    raise result.error
 
 
 def flatten(result: Result[Result[T, E], F]) -> Result[T, Union[E, F]]:
     if is_ok(result):
         return result.value  # type: ignore
-    return Error(result.error)  # type: ignore
+    return error(result.error)
 
 
 def zipped(
@@ -147,4 +150,4 @@ def zipped(
 ) -> Result[tuple[Unpack[Ts], U], E]:
     if is_ok(result):
         return map_(func(*result.value), lambda val: (*result.value, val))
-    return Error(result.error)  # type: ignore
+    return error(result.error)

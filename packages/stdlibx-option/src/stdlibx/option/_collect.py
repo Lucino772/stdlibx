@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import functools
-from typing import Any, Iterable, TypeVar, overload
+from typing import TYPE_CHECKING, Any, Iterable, TypeVar, overload
 
-from stdlibx.option._option import Nothing, Option, Some, is_some
+from stdlibx.option._option import is_some, nothing, some
+
+if TYPE_CHECKING:
+    from stdlibx.option.types import Option
 
 T = TypeVar("T")
 T1 = TypeVar("T1")
@@ -96,16 +99,16 @@ def collect(
 def collect(initial: Option[Any], *others: Option[Any]) -> Option[tuple[Any, ...]]:
     def _combine(a: Option[tuple[Any, ...]], b: Option[Any]) -> Option[tuple[Any, ...]]:
         if is_some(a) and is_some(b):
-            return Some(((*a.value, b.value)))
-        return Nothing()
+            return some(((*a.value, b.value)))
+        return nothing()
 
-    return functools.reduce(_combine, [initial, *others], Some(()))
+    return functools.reduce(_combine, [initial, *others], some(()))
 
 
 def collect_all(iterable: Iterable[Option[T]]) -> Option[tuple[T, ...]]:
     def _combine(a: Option[tuple[T, ...]], b: Option[T]) -> Option[tuple[T, ...]]:
         if is_some(a) and is_some(b):
-            return Some(((*a.value, b.value)))
-        return Nothing()
+            return some(((*a.value, b.value)))
+        return nothing()
 
-    return functools.reduce(_combine, iterable, Some(()))
+    return functools.reduce(_combine, iterable, some(()))

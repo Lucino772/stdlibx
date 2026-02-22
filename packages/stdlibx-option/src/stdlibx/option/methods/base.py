@@ -1,17 +1,13 @@
 from __future__ import annotations
 
-from typing import Callable, TypeVar
+from typing import TYPE_CHECKING, Callable, TypeVar
 
-from stdlibx.option import (
-    Nothing,
-    Option,
-    OptionExpectError,
-    OptionUnwrapError,
-    Some,
-    is_none,
-    is_some,
-)
+from stdlibx.option._errors import OptionExpectError, OptionUnwrapError
+from stdlibx.option._option import is_none, is_some, nothing, some
 from typing_extensions import TypeVarTuple, Unpack
+
+if TYPE_CHECKING:
+    from stdlibx.option.types import Option
 
 T = TypeVar("T")
 U = TypeVar("U")
@@ -52,8 +48,8 @@ def unwrap_or_else(opt: Option[T], func: Callable[[], T]) -> T:
 
 def map_(opt: Option[T], func: Callable[[T], U]) -> Option[U]:
     if is_some(opt):
-        return Some(func(opt.value))
-    return Nothing()
+        return some(func(opt.value))
+    return nothing()
 
 
 def inspect(opt: Option[T], func: Callable[[T], None]) -> Option[T]:
@@ -77,46 +73,46 @@ def map_or_else(opt: Option[T], default: Callable[[], U], func: Callable[[T], U]
 def and_(opt: Option[T], other: Option[U]) -> Option[U]:
     if is_some(opt):
         return other
-    return Nothing()
+    return nothing()
 
 
 def and_then(opt: Option[T], func: Callable[[T], Option[U]]) -> Option[U]:
     if is_some(opt):
         return func(opt.value)
-    return Nothing()
+    return nothing()
 
 
 def filter_(opt: Option[T], predicate: Callable[[T], bool]) -> Option[T]:
     if is_some(opt) and predicate(opt.value) is True:
-        return Some(opt.value)
-    return Nothing()
+        return some(opt.value)
+    return nothing()
 
 
 def or_(opt: Option[T], default: Option[T]) -> Option[T]:
     if is_some(opt):
-        return Some(opt.value)
+        return some(opt.value)
     return default
 
 
 def or_else(opt: Option[T], default: Callable[[], Option[T]]) -> Option[T]:
     if is_some(opt):
-        return Some(opt.value)
+        return some(opt.value)
     return default()
 
 
 def xor(opt: Option[T], other: Option[T]) -> Option[T]:
     if is_some(opt) and is_none(other):
-        return Some(opt.value)
+        return some(opt.value)
     elif is_some(other) and is_none(opt):
-        return Some(other.value)
+        return some(other.value)
     else:
-        return Nothing()
+        return nothing()
 
 
 def flatten(opt: Option[Option[T]]) -> Option[T]:
     if is_some(opt):
         return opt.value
-    return Nothing()
+    return nothing()
 
 
 def zipped(
@@ -124,4 +120,4 @@ def zipped(
 ) -> Option[tuple[Unpack[Ts], U]]:
     if is_some(opt):
         return map_(func(*opt.value), lambda val: (*opt.value, val))
-    return Nothing()
+    return nothing()
